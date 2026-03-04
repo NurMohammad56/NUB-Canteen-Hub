@@ -56,8 +56,27 @@ npm run dev
 ### Base URL
 
 ```
-http://localhost:5000/api
+http://localhost:5000/api/v1
 ```
+
+## Testing
+
+Run automated tests:
+
+```bash
+npm test
+```
+
+Run tests with coverage:
+
+```bash
+npm run test:coverage
+```
+
+Testing documents:
+
+- `TESTING_DOCUMENTATION.md` - Full testing methodology, tools, and workflow.
+- `TEST_REPORT.md` - Executed test-case report including issues found and fixes.
 
 Common HTTP Status Codes:
 

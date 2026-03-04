@@ -1,88 +1,191 @@
 {
   "info": {
-    "name": "NUB Food Delivery API",
-    "description": "Complete API collection for testing NUB Campus Food Delivery System",
+    "name": "NUB Food Delivery API - Complete",
+    "description": "Complete Postman documentation for the NUB Food Delivery backend.\n\nBase URL:\n- {{baseUrl}} (default: http://localhost:5000/api/v1)\n\nAuth tokens:\n- authToken: for student or normal authenticated calls\n- adminToken: for admin-only endpoints\n\nQuick flow:\n1. Run Health Check\n2. Register or Login\n3. Use Menu endpoints to get categoryId/menuItemId\n4. Use Cart and Orders endpoints\n5. Use Admin folders with adminToken\n\nThe collection auto-saves useful IDs and tokens from several responses into collection variables.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5000/api",
+      "value": "http://localhost:5000/api/v1",
       "type": "string"
     },
     {
-      "key": "token",
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "resetToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "menuItemId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
       "value": "",
       "type": "string"
     }
   ],
   "item": [
     {
-      "name": "Authentication",
+      "name": "Health",
+      "description": "Service status endpoint.",
       "item": [
         {
-          "name": "Register User",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Nur Mohammad\",\n  \"email\": \"nur@example.com\",\n  \"studentId\": \"42230301051\",\n  \"phone\": \"01712345678\",\n  \"password\": \"Password123!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/register",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "register"]
-            }
-          }
-        },
-        {
-          "name": "Login User",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"nur@example.com\",\n  \"password\": \"Password123!\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "login"]
-            }
-          }
-        },
-        {
-          "name": "Get Current User",
+          "name": "Health Check",
           "request": {
             "method": "GET",
+            "description": "Checks API availability and returns a timestamp.",
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "Register, login, password reset, and current user endpoints.",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "description": "Creates a student user and returns JWT token.\nRequired fields: name, email, studentId, phone, password",
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/auth/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "me"]
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nur Mohammad\",\n  \"email\": \"nur@example.com\",\n  \"studentId\": \"42230301051\",\n  \"phone\": \"01712345678\",\n  \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.token) pm.collectionVariables.set('authToken', json.data.token);",
+                  "if (json?.data?.user?.id) pm.collectionVariables.set('userId', json.data.user.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "description": "Logs in user and returns JWT token.",
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nur@example.com\",\n  \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.token) pm.collectionVariables.set('authToken', json.data.token);",
+                  "if (json?.data?.user?.role === 'admin' && json?.data?.token) pm.collectionVariables.set('adminToken', json.data.token);",
+                  "if (json?.data?.user?.id) pm.collectionVariables.set('userId', json.data.user.id);"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Forgot Password",
           "request": {
             "method": "POST",
+            "description": "Sends password reset email.\nCopy reset token from your email/reset URL and set collection variable resetToken manually.",
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
             "header": [
               {
                 "key": "Content-Type",
@@ -91,101 +194,461 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"nur@example.com\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/auth/forgot-password",
-              "host": ["{{baseUrl}}"],
-              "path": ["auth", "forgot-password"]
+              "raw": "{\n  \"email\": \"nur@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "description": "Resets password with reset token and returns a new JWT token.",
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password/{{resetToken}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password",
+                "{{resetToken}}"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"NewPassword123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.token) pm.collectionVariables.set('authToken', json.data.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "description": "Returns authenticated user profile.",
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Menu",
+      "name": "Users",
+      "description": "Authenticated user profile operations.",
+      "item": [
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "description": "Updates current user profile (name and/or phone).",
+            "url": {
+              "raw": "{{baseUrl}}/users/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"01711111111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Avatar",
+          "request": {
+            "method": "POST",
+            "description": "Uploads profile avatar image. Form-data field name must be avatar.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "src": "",
+                  "description": "Image file (max 5MB)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/avatar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "avatar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Avatar",
+          "request": {
+            "method": "DELETE",
+            "description": "Deletes current user's avatar.",
+            "url": {
+              "raw": "{{baseUrl}}/users/avatar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "avatar"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "description": "Changes current user password. newPassword must be at least 8 characters.",
+            "url": {
+              "raw": "{{baseUrl}}/users/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "change-password"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Password123!\",\n  \"newPassword\": \"Password1234!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Menu (Public)",
+      "description": "Public menu and category endpoints.",
       "item": [
         {
           "name": "Get All Menu Items",
           "request": {
             "method": "GET",
+            "description": "Returns paginated menu items with optional filters.",
             "url": {
               "raw": "{{baseUrl}}/menu",
-              "host": ["{{baseUrl}}"],
-              "path": ["menu"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menu"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "{{categoryId}}",
+                  "description": "Category ID",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "50",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "300",
+                  "disabled": true
+                },
+                {
+                  "key": "isAvailable",
+                  "value": "true",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "burger",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "disabled": true
+                }
+              ]
             }
-          }
-        },
-        {
-          "name": "Get Menu Item by ID",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{baseUrl}}/menu/:id",
-              "host": ["{{baseUrl}}"],
-              "path": ["menu", ":id"]
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.length) pm.collectionVariables.set('menuItemId', json.data[0]._id);"
+                ]
+              }
             }
-          }
+          ]
         },
         {
           "name": "Search Menu Items",
           "request": {
             "method": "GET",
+            "description": "Quick search on available menu items by name/description.",
             "url": {
               "raw": "{{baseUrl}}/menu/search?q=burger",
-              "host": ["{{baseUrl}}"],
-              "path": ["menu", "search"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menu",
+                "search"
+              ],
               "query": [
                 {
                   "key": "q",
-                  "value": "burger"
+                  "value": "burger",
+                  "description": "Search keyword"
                 }
               ]
             }
-          }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.length) pm.collectionVariables.set('menuItemId', json.data[0]._id);"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Get Categories",
           "request": {
             "method": "GET",
+            "description": "Returns all menu categories.",
             "url": {
               "raw": "{{baseUrl}}/menu/categories",
-              "host": ["{{baseUrl}}"],
-              "path": ["menu", "categories"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menu",
+                "categories"
+              ]
             }
-          }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.length) pm.collectionVariables.set('categoryId', json.data[0]._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Menu Item By ID",
+          "request": {
+            "method": "GET",
+            "description": "Returns one menu item by ID.",
+            "url": {
+              "raw": "{{baseUrl}}/menu/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menu",
+                "{{menuItemId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
     {
       "name": "Cart",
+      "description": "Authenticated cart operations.",
       "item": [
         {
           "name": "Get Cart",
           "request": {
             "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
+            "description": "Returns current user's cart. Creates empty cart if not found.",
             "url": {
               "raw": "{{baseUrl}}/cart",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
-          "name": "Add Item to Cart",
+          "name": "Add Item To Cart",
           "request": {
             "method": "POST",
+            "description": "Adds item to cart. Quantity allowed: 1-10.",
+            "url": {
+              "raw": "{{baseUrl}}/cart/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart",
+                "items"
+              ]
+            },
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
               {
                 "key": "Content-Type",
                 "value": "application/json"
@@ -193,24 +656,43 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"menuItemId\": \"<menu-item-id>\",\n  \"quantity\": 2\n}"
+              "raw": "{\n  \"menuItemId\": \"{{menuItemId}}\",\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
-            "url": {
-              "raw": "{{baseUrl}}/cart/items",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items"]
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Update Cart Item",
           "request": {
             "method": "PUT",
+            "description": "Updates item quantity in cart. Use quantity 0 to remove the item.",
+            "url": {
+              "raw": "{{baseUrl}}/cart/items/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart",
+                "items",
+                "{{menuItemId}}"
+              ]
+            },
             "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
               {
                 "key": "Content-Type",
                 "value": "application/json"
@@ -218,48 +700,880 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"quantity\": 3\n}"
+              "raw": "{\n  \"quantity\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             },
-            "url": {
-              "raw": "{{baseUrl}}/cart/items/:menuItemId",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items", ":menuItemId"]
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
-          "name": "Remove Item from Cart",
+          "name": "Remove Item From Cart",
           "request": {
             "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
+            "description": "Removes a specific item from the cart.",
             "url": {
-              "raw": "{{baseUrl}}/cart/items/:menuItemId",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart", "items", ":menuItemId"]
+              "raw": "{{baseUrl}}/cart/items/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart",
+                "items",
+                "{{menuItemId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
             }
-          }
+          },
+          "response": []
         },
         {
           "name": "Clear Cart",
           "request": {
             "method": "DELETE",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
+            "description": "Removes all cart items and resets total amount.",
             "url": {
               "raw": "{{baseUrl}}/cart",
-              "host": ["{{baseUrl}}"],
-              "path": ["cart"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
             }
-          }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Orders (Student)",
+      "description": "Authenticated student order operations.",
+      "item": [
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "description": "Places an order from current cart and clears the cart.",
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specialInstructions\": \"Less spicy please\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?._id) pm.collectionVariables.set('orderId', json.data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get My Orders",
+          "request": {
+            "method": "GET",
+            "description": "Returns current user's paginated orders.",
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Pending",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.length) pm.collectionVariables.set('orderId', json.data[0]._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Order By ID",
+          "request": {
+            "method": "GET",
+            "description": "Returns a single order for the current user.",
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "{{orderId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "PUT",
+            "description": "Cancels an order if status is Pending.",
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "{{orderId}}",
+                "cancel"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Users",
+      "description": "Admin-only user management endpoints under /users/admin.",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "description": "Returns paginated users with optional filters.",
+            "url": {
+              "raw": "{{baseUrl}}/users/admin/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "admin",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "student",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "nur",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.length) {",
+                  "  const firstNonAdmin = json.data.find(u => u.role !== 'admin') || json.data[0];",
+                  "  if (firstNonAdmin?._id) pm.collectionVariables.set('userId', firstNonAdmin._id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "PUT",
+            "description": "Updates a user role. Allowed values: student, admin.",
+            "url": {
+              "raw": "{{baseUrl}}/users/admin/{{userId}}/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "admin",
+                "{{userId}}",
+                "role"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"student\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Menu & Categories",
+      "description": "Admin-only menu and category management endpoints.",
+      "item": [
+        {
+          "name": "Create Menu Item",
+          "request": {
+            "method": "POST",
+            "description": "Creates a menu item.\nRequired fields: name, description, category, price, preparationTime\nOptional: isAvailable, image(file key: image)",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Chicken Burger",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Grilled chicken burger",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "{{categoryId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "120",
+                  "type": "text"
+                },
+                {
+                  "key": "preparationTime",
+                  "value": "12",
+                  "type": "text"
+                },
+                {
+                  "key": "isAvailable",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "",
+                  "description": "Optional image file"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?._id) pm.collectionVariables.set('menuItemId', json.data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Menu Item",
+          "request": {
+            "method": "PUT",
+            "description": "Updates an existing menu item. Send only fields you need to change.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Updated Burger",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated description",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "{{categoryId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "130",
+                  "type": "text"
+                },
+                {
+                  "key": "preparationTime",
+                  "value": "15",
+                  "type": "text"
+                },
+                {
+                  "key": "isAvailable",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "",
+                  "description": "Optional new image file"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu",
+                "{{menuItemId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Menu Item",
+          "request": {
+            "method": "DELETE",
+            "description": "Deletes a menu item and associated image (if exists).",
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu/{{menuItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu",
+                "{{menuItemId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Menu Availability",
+          "request": {
+            "method": "PATCH",
+            "description": "Toggles menu item availability between enabled/disabled.",
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu/{{menuItemId}}/availability",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu",
+                "{{menuItemId}}",
+                "availability"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "description": "Creates a new category.",
+            "url": {
+              "raw": "{{baseUrl}}/admin/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "categories"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rice Bowls\",\n  \"description\": \"Rice-based meals\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?._id) pm.collectionVariables.set('categoryId', json.data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "description": "Updates category name and/or description.",
+            "url": {
+              "raw": "{{baseUrl}}/admin/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "categories",
+                "{{categoryId}}"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Category Name\",\n  \"description\": \"Updated description\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "description": "Deletes category if no menu item is using it.",
+            "url": {
+              "raw": "{{baseUrl}}/admin/categories/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "categories",
+                "{{categoryId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin - Orders",
+      "description": "Admin-only order management and analytics endpoints.",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "description": "Returns paginated orders with filters and grouped status stats.",
+            "url": {
+              "raw": "{{baseUrl}}/orders/admin/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "admin",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Pending",
+                  "disabled": true
+                },
+                {
+                  "key": "startDate",
+                  "value": "2026-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "endDate",
+                  "value": "2026-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let json = {};",
+                  "try { json = pm.response.json(); } catch (e) {}",
+                  "if (json?.data?.length) pm.collectionVariables.set('orderId', json.data[0]._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PUT",
+            "description": "Updates order status. Allowed: Pending, Preparing, Ready, Completed, Cancelled.",
+            "url": {
+              "raw": "{{baseUrl}}/orders/{{orderId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "{{orderId}}",
+                "status"
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Preparing\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order Stats",
+          "request": {
+            "method": "GET",
+            "description": "Returns order analytics: overall, byStatus, popularItems, byDate.",
+            "url": {
+              "raw": "{{baseUrl}}/orders/admin/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "orders",
+                "admin",
+                "stats"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2026-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "endDate",
+                  "value": "2026-12-31",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     }
