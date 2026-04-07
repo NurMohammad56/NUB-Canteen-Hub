@@ -93,28 +93,22 @@ export default function HomePage() {
 
   return (
     <div className="container-page py-8 sm:py-10">
-      <section className="grid gap-6 xl:grid-cols-[1.04fr_0.96fr] xl:items-start">
-        <div className="space-y-6">
-          <div className="relative overflow-hidden rounded-[32px] bg-brand-900 p-8 text-white shadow-soft sm:p-10">
+      <section className="grid gap-5 xl:grid-cols-[1.04fr_0.96fr] xl:items-start">
+        <div className="space-y-5">
+          <div className="relative overflow-hidden rounded-[32px] bg-brand-900 p-7 text-white shadow-soft sm:p-8">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(114,126,217,0.34),transparent_28%),radial-gradient(circle_at_80%_16%,rgba(255,255,255,0.08),transparent_16%),radial-gradient(circle_at_bottom_right,rgba(2,154,87,0.22),transparent_34%)]" />
             <div className="relative">
               <p className="section-kicker !text-brand-200">
                 NUB Canteen Hub / Campus menu
               </p>
-              <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
                 Order ahead, skip the queue, and pick up meals right on time.
               </h1>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-white/75 sm:text-base">
-                Skip the line, grab your food exactly when you need it, and make
-                your campus life a whole lot easier. This experience is built
-                for students who don't want to waste time waiting in long queues
-                or dealing with slow ordering systems. With a clean and
-                intuitive interface, you can quickly explore a wide variety of
-                meals, filter options based on your preferences, and view rich,
-                detailed menus that actually help you decide what to eat.
+              <p className="mt-4 max-w-xl text-sm leading-6 text-white/75">
+                Skip the line, grab your food on time, and enjoy a smarter campus food experience. Discover meals faster with smooth browsing, eye catching menus, and a system built to match your daily student life quick, simple, and hassle free.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-3">
                 <span className="pill border-white/10 bg-white/10 text-white">
                   Live menu filtering
                 </span>
@@ -123,26 +117,26 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                <div className="glass-panel p-4">
+              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                <div className="glass-panel p-3.5">
                   <p className="text-xs uppercase tracking-[0.24em] text-white/55">
                     Active items
                   </p>
-                  <p className="mt-3 text-3xl font-semibold">{matchingCount}</p>
+                  <p className="mt-2 text-2xl font-semibold">{matchingCount}</p>
                 </div>
-                <div className="glass-panel p-4">
+                <div className="glass-panel p-3.5">
                   <p className="text-xs uppercase tracking-[0.24em] text-white/55">
                     Categories
                   </p>
-                  <p className="mt-3 text-3xl font-semibold">
+                  <p className="mt-2 text-2xl font-semibold">
                     {categories.length}
                   </p>
                 </div>
-                <div className="glass-panel p-4">
+                <div className="glass-panel p-3.5">
                   <p className="text-xs uppercase tracking-[0.24em] text-white/55">
                     Fastest prep
                   </p>
-                  <p className="mt-3 text-3xl font-semibold">
+                  <p className="mt-2 text-2xl font-semibold">
                     {featuredItems[0]?.preparationTime || 0} min
                   </p>
                 </div>
@@ -151,35 +145,35 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-[1.05fr_0.95fr]">
-            <div className="card p-6">
+            <div className="card p-5">
               <p className="section-kicker">Pickup rhythm</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">
                 Three simple steps from menu to meal.
               </h2>
-              <div className="mt-5 grid gap-3">
-                <div className="rounded-[22px] bg-slate-50 px-4 py-4">
+              <div className="mt-4 grid gap-3">
+                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     01 / Browse
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-800">
+                  <p className="mt-1.5 text-sm font-medium leading-6 text-slate-800">
                     Scan the menu, compare prep times, and lock in what you
                     want.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-4">
+                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     02 / Reserve
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-800">
+                  <p className="mt-1.5 text-sm font-medium leading-6 text-slate-800">
                     Place the order before the rush and keep payment simple at
                     pickup.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-4">
+                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     03 / Collect
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-800">
+                  <p className="mt-1.5 text-sm font-medium leading-6 text-slate-800">
                     Track status updates and arrive when the food is nearly
                     ready.
                   </p>
@@ -187,42 +181,33 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="card p-6">
+            <div className="card p-5">
               <p className="section-kicker">Smart ordering</p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">
                 Made for short campus breaks and fast pickup decisions.
               </h2>
-              <div className="mt-5 space-y-3">
-                <div className="rounded-[22px] bg-slate-50 px-4 py-4">
+              <div className="mt-4 space-y-3">
+                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     Before class
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-800">
+                  <p className="mt-1.5 text-sm font-medium leading-6 text-slate-800">
                     Choose faster-prep items when you need a tight pickup
                     window.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-4">
+                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     Lunch rush
                   </p>
-                  <p className="mt-2 text-sm font-medium text-slate-800">
+                  <p className="mt-1.5 text-sm font-medium leading-6 text-slate-800">
                     Use the filters to cut through the menu and go straight to
                     what is available.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
-                    Quick compare
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-slate-800">
-                    Prep time, price, and item details stay visible so the
-                    decision is faster.
-                  </p>
-                </div>
               </div>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {categories.slice(0, 5).map((category) => (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {categories.slice(0, 7).map((category) => (
                   <span
                     key={category._id}
                     className="rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700"

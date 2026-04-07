@@ -24,14 +24,14 @@ export default function MenuShowcase({ items = [], onAdd }) {
   const activeItem = featured[activeIndex];
 
   return (
-    <div className="card relative overflow-hidden p-6 sm:p-7">
+    <div className="card relative overflow-hidden p-5 sm:p-6">
       <div className="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-emerald-50" />
-      <div className="absolute right-0 top-0 h-44 w-44 rounded-full bg-brand-200/50 blur-3xl" />
-      <div className="relative space-y-6">
+      <div className="absolute right-0 top-0 h-36 w-36 rounded-full bg-brand-200/50 blur-3xl" />
+      <div className="relative space-y-5">
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="section-kicker">Featured Slider</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Fresh picks rotating live</h2>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">Fresh picks rotating live</h2>
           </div>
           <div className="hidden items-center gap-2 sm:flex">
             <button type="button" onClick={() => setActiveIndex((current) => (current - 1 + featured.length) % featured.length)} className="btn-secondary h-11 w-11 !rounded-full !px-0" aria-label="Previous item">
@@ -45,7 +45,7 @@ export default function MenuShowcase({ items = [], onAdd }) {
 
         <div className="space-y-4">
           <div className="overflow-hidden rounded-[28px] bg-slate-950 shadow-soft">
-            <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-brand-200 via-brand-100 to-emerald-100">
+            <div className="relative aspect-[16/8.5] overflow-hidden bg-gradient-to-br from-brand-200 via-brand-100 to-emerald-100">
               {activeItem.imageUrl ? (
                 <img src={activeItem.imageUrl} alt={activeItem.name} className="absolute inset-0 h-full w-full object-cover object-center" />
               ) : (
@@ -59,25 +59,25 @@ export default function MenuShowcase({ items = [], onAdd }) {
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/30 to-transparent" />
             </div>
 
-            <div className="space-y-5 p-6 text-white sm:p-8">
-              <div className="space-y-4">
+            <div className="space-y-4 p-5 text-white sm:p-6">
+              <div className="space-y-3">
                 <span className="pill w-fit border-white/15 bg-white/10 text-white/85">
                   {activeItem.category?.name || activeItem.category || 'Chef special'}
                 </span>
                 <div>
-                  <h3 className="text-3xl font-semibold tracking-tight">{activeItem.name}</h3>
-                  <p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">{activeItem.description}</p>
+                  <h3 className="text-2xl font-semibold tracking-tight sm:text-[1.9rem]">{activeItem.name}</h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-white/75">{activeItem.description}</p>
                 </div>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="glass-panel p-4">
+                <div className="glass-panel p-3.5">
                   <p className="text-xs uppercase tracking-[0.24em] text-white/55">Ready in</p>
-                  <p className="mt-2 text-2xl font-semibold">{activeItem.preparationTime} min</p>
+                  <p className="mt-2 text-xl font-semibold sm:text-2xl">{activeItem.preparationTime} min</p>
                 </div>
-                <div className="glass-panel p-4">
+                <div className="glass-panel p-3.5">
                   <p className="text-xs uppercase tracking-[0.24em] text-white/55">Price</p>
-                  <p className="mt-2 text-2xl font-semibold">{currency(activeItem.price)}</p>
+                  <p className="mt-2 text-xl font-semibold sm:text-2xl">{currency(activeItem.price)}</p>
                 </div>
               </div>
 
@@ -90,13 +90,13 @@ export default function MenuShowcase({ items = [], onAdd }) {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
+          <div className="grid gap-3 sm:grid-cols-2">
             {featured.map((item, index) => (
               <button
                 key={item._id}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`w-full rounded-[24px] border p-4 text-left transition ${index === activeIndex ? 'border-brand-300 bg-white shadow-soft' : 'border-white/70 bg-white/70 hover:bg-white'}`}
+                className={`w-full rounded-[24px] border p-3.5 text-left transition ${index === activeIndex ? 'border-brand-300 bg-white shadow-soft' : 'border-white/70 bg-white/70 hover:bg-white'}`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <div>
