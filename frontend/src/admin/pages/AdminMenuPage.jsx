@@ -4,6 +4,7 @@ import EmptyState from '../../components/common/EmptyState';
 import Loader from '../../components/common/Loader';
 import Modal from '../../components/common/Modal';
 import Pagination from '../../components/common/Pagination';
+import menuBackground from '../../assets/isometric-cartoon-indian-food-illustration_98292-43248.avif';
 
 const PAGE_SIZE = 10;
 const initialForm = {
@@ -169,8 +170,17 @@ export default function AdminMenuPage() {
       {message ? <div className="card p-4 text-sm text-emerald-600">{message}</div> : null}
       {error ? <div className="card p-4 text-sm text-rose-600">{error}</div> : null}
 
-      <div className="card p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="card relative overflow-hidden p-6">
+        <div className="pointer-events-none absolute bottom-4 right-4 h-28 w-28 rounded-full bg-brand-100/70 blur-2xl" />
+        <div className="pointer-events-none absolute bottom-4 right-4 hidden h-28 w-28 overflow-hidden rounded-full opacity-[0.12] lg:block">
+          <img
+            src={menuBackground}
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full scale-110 object-cover object-center"
+          />
+        </div>
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="text-xl font-semibold text-slate-900">Menu inventory</h2>
             <p className="mt-2 text-sm text-slate-500">Manage menu items and availability. Category editing now lives in the separate Categories module.</p>
@@ -181,9 +191,9 @@ export default function AdminMenuPage() {
           </div>
         </div>
 
-        {!menu.length ? <div className="mt-5"><EmptyState title="No menu items yet" description="Create a menu item to populate the public menu." /></div> : null}
+        {!menu.length ? <div className="relative mt-5"><EmptyState title="No menu items yet" description="Create a menu item to populate the public menu." /></div> : null}
 
-        <div className="mt-5 -mx-6 overflow-x-auto px-6">
+        <div className="relative mt-5 -mx-6 overflow-x-auto px-6">
           <table className="min-w-[920px] w-full text-left text-sm">
             <thead className="text-slate-500">
               <tr>
@@ -216,7 +226,7 @@ export default function AdminMenuPage() {
           </table>
         </div>
 
-        <Pagination page={meta.page} pages={meta.pages} onPageChange={(page) => loadData({ silent: true, page })} className="mt-6" />
+        <Pagination page={meta.page} pages={meta.pages} onPageChange={(page) => loadData({ silent: true, page })} className="relative mt-6" />
       </div>
 
       <Modal open={menuModalOpen} onClose={resetMenuForm} title={editingId ? 'Edit menu item' : 'Create menu item'}>

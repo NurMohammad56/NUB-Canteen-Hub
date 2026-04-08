@@ -3,6 +3,7 @@ import { userApi } from '../../api/services';
 import EmptyState from '../../components/common/EmptyState';
 import Loader from '../../components/common/Loader';
 import Pagination from '../../components/common/Pagination';
+import userToolsBackground from '../../assets/food-vector-graphics-portable-network-graphics-vegetable-image-png-favpng-HjDgxuk9ye09rnNLRngL2ZxNG.jpg';
 
 const PAGE_SIZE = 10;
 
@@ -74,8 +75,14 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      <div className="card p-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="card relative overflow-hidden p-6">
+        <img
+          src={userToolsBackground}
+          alt=""
+          aria-hidden="true"
+          className="absolute bottom-0 right-0 h-44 w-44 object-cover opacity-[0.07]"
+        />
+        <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="grid flex-1 gap-4 md:grid-cols-[1fr_220px]">
             <input className="input" placeholder="Search by name, email, or student ID" value={filters.search} onChange={(e) => setFilters({ ...filters, search: e.target.value })} />
             <select className="input" value={filters.role} onChange={(e) => setFilters({ ...filters, role: e.target.value })}>
@@ -91,9 +98,10 @@ export default function AdminUsersPage() {
       {error ? <div className="card p-6 text-sm text-rose-600">{error}</div> : null}
       {!error && !users.length ? <EmptyState title="No users found" description="No user accounts match the current filters." /> : null}
 
-      <div className={`card p-6 transition-opacity duration-200 ${refreshing ? 'opacity-70' : 'opacity-100'}`}>
+      <div className={`card relative overflow-hidden p-6 transition-opacity duration-200 ${refreshing ? 'opacity-70' : 'opacity-100'}`}>
+        <div className="absolute left-0 top-0 h-32 w-32 rounded-full bg-brand-100/60 blur-3xl" />
         <h2 className="text-xl font-semibold text-slate-900">User management</h2>
-        <div className="mt-5 overflow-x-auto">
+        <div className="relative mt-5 overflow-x-auto">
           <table className="min-w-[820px] w-full text-left text-sm">
             <thead className="text-slate-500">
               <tr>
@@ -121,7 +129,7 @@ export default function AdminUsersPage() {
           </table>
         </div>
 
-        <Pagination page={meta.page} pages={meta.pages} onPageChange={(page) => loadUsers({ silent: true, page })} className="mt-6" />
+        <Pagination page={meta.page} pages={meta.pages} onPageChange={(page) => loadUsers({ silent: true, page })} className="relative mt-6" />
       </div>
     </div>
   );

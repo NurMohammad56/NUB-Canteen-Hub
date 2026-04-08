@@ -4,6 +4,8 @@ import EmptyState from '../../components/common/EmptyState';
 import Loader from '../../components/common/Loader';
 import { currency } from '../../lib/utils';
 import StatCard from '../components/StatCard';
+import dashboardBackground from '../../assets/Section BG.avif';
+import vegetablesImage from '../../assets/vegetables.png';
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState(null);
@@ -26,6 +28,12 @@ export default function AdminDashboardPage() {
     <div className="space-y-8">
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="relative overflow-hidden rounded-[32px] bg-brand-900 p-7 text-white shadow-soft sm:p-8">
+          <img
+            src={dashboardBackground}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.18]"
+          />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(114,126,217,0.34),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(255,255,255,0.08),transparent_16%),radial-gradient(circle_at_bottom_right,rgba(2,154,87,0.2),transparent_32%)]" />
           <div className="relative">
             <p className="text-xs uppercase tracking-[0.28em] text-white/55">Operational snapshot</p>
@@ -47,12 +55,20 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="card p-6">
-          <p className="section-kicker">Performance</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Top selling menu items</h2>
-          <div className="mt-5 space-y-3">
+        <div className="card relative overflow-hidden p-6">
+          <img
+            src={vegetablesImage}
+            alt=""
+            aria-hidden="true"
+            className="absolute bottom-0 right-0 h-44 w-44 object-contain opacity-[0.08]"
+          />
+          <div className="relative">
+            <p className="section-kicker">Performance</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">Top selling menu items</h2>
+          </div>
+          <div className="relative mt-5 space-y-3">
             {(stats?.popularItems || []).slice(0, 4).map((item) => (
-              <div key={item._id} className="rounded-[22px] bg-slate-50 px-4 py-3">
+              <div key={item._id} className="rounded-[22px] bg-white/80 px-4 py-3 backdrop-blur-sm">
                 <div className="flex items-center justify-between gap-3">
                   <span className="font-medium text-slate-800">{item._id}</span>
                   <span className="text-sm text-slate-500">{item.totalOrdered} ordered</span>
@@ -72,9 +88,12 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-8 xl:grid-cols-2">
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-slate-900">7 day order activity</h2>
-          <div className="mt-5 space-y-3">
+        <div className="card relative overflow-hidden p-6">
+          <div className="absolute right-0 top-0 h-36 w-36 rounded-full bg-brand-100/60 blur-3xl" />
+          <div className="relative">
+            <h2 className="text-lg font-semibold text-slate-900">7 day order activity</h2>
+          </div>
+          <div className="relative mt-5 space-y-3">
             {(stats?.byDate || []).map((day) => (
               <div key={day._id} className="flex items-center justify-between rounded-[22px] border border-slate-200 px-4 py-3 text-sm">
                 <span className="font-medium text-slate-700">{day._id}</span>
@@ -84,9 +103,12 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-slate-900">Status distribution</h2>
-          <div className="mt-5 space-y-3">
+        <div className="card relative overflow-hidden p-6">
+          <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-emerald-100/60 blur-3xl" />
+          <div className="relative">
+            <h2 className="text-lg font-semibold text-slate-900">Status distribution</h2>
+          </div>
+          <div className="relative mt-5 space-y-3">
             {Object.entries(statusMap).map(([status, count]) => (
               <div key={status} className="rounded-[22px] bg-slate-50 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">

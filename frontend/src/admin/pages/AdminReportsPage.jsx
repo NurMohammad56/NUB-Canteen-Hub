@@ -4,6 +4,7 @@ import EmptyState from '../../components/common/EmptyState';
 import Loader from '../../components/common/Loader';
 import Pagination from '../../components/common/Pagination';
 import { currency } from '../../lib/utils';
+import reportsBackground from '../../assets/brazilian-food-cuisine-illustration-vector.jpg';
 
 const REPORT_PAGE_SIZE = 5;
 
@@ -68,8 +69,14 @@ export default function AdminReportsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="card p-6">
-        <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto_auto]">
+      <div className="card relative overflow-hidden p-6">
+        <img
+          src={reportsBackground}
+          alt=""
+          aria-hidden="true"
+          className="absolute bottom-0 right-0 h-40 w-40 object-cover opacity-[0.08]"
+        />
+        <div className="relative grid gap-4 md:grid-cols-[1fr_1fr_auto_auto]">
           <input className="input" type="date" value={filters.startDate} onChange={(e) => setFilters({ ...filters, startDate: e.target.value })} />
           <input className="input" type="date" value={filters.endDate} onChange={(e) => setFilters({ ...filters, endDate: e.target.value })} />
           <button onClick={exportCsv} className="btn-primary">Export CSV</button>
@@ -94,10 +101,11 @@ export default function AdminReportsPage() {
         </div>
       </div>
 
-      <div className={`card p-6 transition-opacity duration-200 ${refreshing ? 'opacity-70' : 'opacity-100'}`}>
-        <h2 className="text-xl font-semibold text-slate-900">Most popular items</h2>
+      <div className={`card relative overflow-hidden p-6 transition-opacity duration-200 ${refreshing ? 'opacity-70' : 'opacity-100'}`}>
+        <div className="absolute left-0 bottom-0 h-32 w-32 rounded-full bg-emerald-100/60 blur-3xl" />
+        <h2 className="relative text-xl font-semibold text-slate-900">Most popular items</h2>
         {!(stats?.popularItems || []).length ? <div className="mt-5"><EmptyState title="No report data yet" description="Once orders are placed, item performance will appear here." /></div> : null}
-        <div className="mt-5 space-y-3">
+        <div className="relative mt-5 space-y-3">
           {pagedPopularItems.map((item) => (
             <div key={item._id} className="flex items-center justify-between rounded-[22px] border border-slate-200 px-4 py-3 text-sm">
               <span>{item._id}</span>

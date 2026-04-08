@@ -7,6 +7,9 @@ import Toast from "../../components/common/Toast";
 import MenuShowcase from "../../components/home/MenuShowcase";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
+import sectionBackground from "../../assets/Section BG.avif";
+import pickupIllustration from "../../assets/isometric-cartoon-indian-food-illustration_98292-43248.avif";
+import orderingIllustration from "../../assets/brazilian-food-cuisine-illustration-vector.jpg";
 
 export default function HomePage() {
   const { isAuthenticated } = useAuth();
@@ -96,16 +99,24 @@ export default function HomePage() {
       <section className="grid gap-5 xl:grid-cols-[1.04fr_0.96fr] xl:items-start">
         <div className="space-y-5">
           <div className="relative overflow-hidden rounded-[32px] bg-brand-900 p-7 text-white shadow-soft sm:p-8">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(114,126,217,0.34),transparent_28%),radial-gradient(circle_at_80%_16%,rgba(255,255,255,0.08),transparent_16%),radial-gradient(circle_at_bottom_right,rgba(2,154,87,0.22),transparent_34%)]" />
+            <img
+              src={sectionBackground}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover object-center opacity-32"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(105deg,rgba(32,33,90,0.9)_0%,rgba(32,33,90,0.82)_45%,rgba(32,33,90,0.7)_100%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(114,126,217,0.28),transparent_28%),radial-gradient(circle_at_80%_16%,rgba(255,255,255,0.06),transparent_16%),radial-gradient(circle_at_bottom_right,rgba(2,154,87,0.16),transparent_34%)]" />
             <div className="relative">
-              <p className="section-kicker !text-brand-200">
-                NUB Canteen Hub / Campus menu
-              </p>
+              <p className="section-kicker !text-brand-200">NUB Canteen Hub</p>
               <h1 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
                 Order ahead, skip the queue, and pick up meals right on time.
               </h1>
               <p className="mt-4 max-w-xl text-sm leading-6 text-white/75">
-                Skip the line, grab your food on time, and enjoy a smarter campus food experience. Discover meals faster with smooth browsing, eye catching menus, and a system built to match your daily student life quick, simple, and hassle free.
+                Skip the line, grab your food on time, and enjoy a smarter
+                campus food experience. Discover meals faster with smooth
+                browsing, eye catching menus, and a system built to match your
+                daily student life quick, simple, and hassle free.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
@@ -145,13 +156,20 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-[1.05fr_0.95fr]">
-            <div className="card p-5">
+            <div className="card relative overflow-hidden p-5">
+              <div className="absolute bottom-3 right-3 h-24 w-24 rounded-full bg-brand-100/70 blur-2xl" />
+              <img
+                src={orderingIllustration}
+                alt=""
+                aria-hidden="true"
+                className="absolute right-[-2.5rem] top-[-1rem] h-40 w-40 rounded-full object-cover opacity-10"
+              />
               <p className="section-kicker">Pickup rhythm</p>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">
+              <h2 className="relative mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">
                 Three simple steps from menu to meal.
               </h2>
-              <div className="mt-4 grid gap-3">
-                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
+              <div className="relative mt-4 grid gap-3">
+                <div className="rounded-[22px] bg-white/70 px-4 py-3.5 backdrop-blur-sm">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     01 / Browse
                   </p>
@@ -160,7 +178,7 @@ export default function HomePage() {
                     want.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
+                <div className="rounded-[22px] bg-white/70 px-4 py-3.5 backdrop-blur-sm">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     02 / Reserve
                   </p>
@@ -169,7 +187,7 @@ export default function HomePage() {
                     pickup.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
+                <div className="rounded-[22px] bg-white/70 px-4 py-3.5 backdrop-blur-sm">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     03 / Collect
                   </p>
@@ -181,13 +199,19 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="card p-5">
+            <div className="card relative overflow-hidden p-5">
+              <img
+                src={orderingIllustration}
+                alt=""
+                aria-hidden="true"
+                className="absolute right-[-2.5rem] top-[-1rem] h-40 w-40 rounded-full object-cover opacity-10"
+              />
               <p className="section-kicker">Smart ordering</p>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">
-                Made for short campus breaks and fast pickup decisions.
+              <h2 className="relative mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-[1.7rem]">
+                For short campus breaks and fast pickup decisions.
               </h2>
-              <div className="mt-4 space-y-3">
-                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
+              <div className="relative mt-4 space-y-3">
+                <div className="rounded-[22px] bg-white/72 px-4 py-3.5 backdrop-blur-sm">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     Before class
                   </p>
@@ -196,7 +220,7 @@ export default function HomePage() {
                     window.
                   </p>
                 </div>
-                <div className="rounded-[22px] bg-slate-50 px-4 py-3.5">
+                <div className="rounded-[22px] bg-white/72 px-4 py-3.5 backdrop-blur-sm">
                   <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
                     Lunch rush
                   </p>
@@ -206,7 +230,7 @@ export default function HomePage() {
                   </p>
                 </div>
               </div>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="relative mt-4 flex flex-wrap gap-2">
                 {categories.slice(0, 7).map((category) => (
                   <span
                     key={category._id}

@@ -5,6 +5,7 @@ import Loader from '../../components/common/Loader';
 import Pagination from '../../components/common/Pagination';
 import StatusBadge from '../../components/common/StatusBadge';
 import { currency, formatDateTime } from '../../lib/utils';
+import ordersBackground from '../../assets/Section BG.avif';
 
 const PAGE_SIZE = 8;
 const statuses = ['Pending', 'Preparing', 'Ready', 'Completed', 'Cancelled'];
@@ -74,8 +75,14 @@ export default function AdminOrdersPage() {
         </div>
       </div>
 
-      <div className="card p-6">
-        <div className="grid gap-4 md:grid-cols-[1fr_1fr_1fr_auto]">
+      <div className="card relative overflow-hidden p-6">
+        <img
+          src={ordersBackground}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-[0.06]"
+        />
+        <div className="relative grid gap-4 md:grid-cols-[1fr_1fr_1fr_auto]">
           <select className="input" value={filters.status} onChange={(e) => setFilters({ ...filters, status: e.target.value })}>
             <option value="">All statuses</option>
             {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
@@ -91,7 +98,8 @@ export default function AdminOrdersPage() {
 
       <div className="space-y-4">
         {orders.map((order) => (
-          <div key={order._id} className={`card p-5 transition-opacity duration-200 ${refreshing ? 'opacity-70' : 'opacity-100'}`}>
+          <div key={order._id} className={`card relative overflow-hidden p-5 transition-opacity duration-200 ${refreshing ? 'opacity-70' : 'opacity-100'}`}>
+            <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-brand-100/50 blur-3xl" />
             <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div>
                 <div className="flex flex-wrap items-center gap-3">
