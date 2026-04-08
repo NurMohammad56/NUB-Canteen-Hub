@@ -138,7 +138,7 @@ export default function MenuShowcase({ items = [], onAdd }) {
                   onClick={() => onAdd(activeItem)}
                   className="btn-primary"
                 >
-                  Add featured item
+                  Add to cart
                 </button>
               </div>
             </div>

@@ -9,7 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 export default function MenuDetailsPage() {
   const { id } = useParams();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   const { addToCart } = useCart();
   const [item, setItem] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -26,6 +26,8 @@ export default function MenuDetailsPage() {
     try {
       if (!isAuthenticated) {
         setToast('Please login first to add this item.');
+      } else if (isAdmin) {
+        setToast('You are logged in as admin. Cart ordering is only available for student accounts.');
       } else {
         await addToCart(item._id, quantity);
         setToast('Item added to cart successfully.');

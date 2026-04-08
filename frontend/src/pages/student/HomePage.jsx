@@ -12,7 +12,7 @@ import pickupIllustration from "../../assets/isometric-cartoon-indian-food-illus
 import orderingIllustration from "../../assets/brazilian-food-cuisine-illustration-vector.jpg";
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   const { addToCart } = useCart();
   const [menuItems, setMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -80,6 +80,11 @@ export default function HomePage() {
     if (!isAuthenticated) {
       setToast("Please login first to add items to your cart.");
       setTimeout(() => setToast(""), 2200);
+      return;
+    }
+    if (isAdmin) {
+      setToast("You are logged in as admin. Cart ordering is only available for student accounts.");
+      setTimeout(() => setToast(""), 2600);
       return;
     }
     try {
