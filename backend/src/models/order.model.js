@@ -55,6 +55,12 @@ const orderSchema = new Schema(
       required: [true, 'Please provide total amount'],
       min: [0, 'Total amount cannot be negative']
     },
+    deliveryAddress: {
+      type: String,
+      required: [true, 'Please provide exact address'],
+      trim: true,
+      maxlength: [300, 'Address cannot exceed 300 characters']
+    },
     status: {
       type: String,
       enum: ['Pending', 'Preparing', 'Ready', 'Completed', 'Cancelled'],

@@ -7,6 +7,7 @@ import {
   getAllOrders,
   updateOrderStatus,
   getOrderStats,
+  deleteOrderHistory,
 } from "../controllers/order.controller.js";
 import { protect, authorize } from "../middleware/auth.middleware.js";
 
@@ -23,6 +24,7 @@ router.put("/:id/cancel", cancelOrder);
 // Admin routes
 router.get("/admin/all", authorize("admin"), getAllOrders);
 router.put("/:id/status", authorize("admin"), updateOrderStatus);
+router.delete("/admin/:id", authorize("admin"), deleteOrderHistory);
 router.get("/admin/stats", authorize("admin"), getOrderStats);
 
 export default router;

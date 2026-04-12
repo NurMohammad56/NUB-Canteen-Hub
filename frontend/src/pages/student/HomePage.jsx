@@ -14,7 +14,7 @@ import orderingIllustration from "../../assets/brazilian-food-cuisine-illustrati
 export default function HomePage() {
   const { isAuthenticated, isAdmin } = useAuth();
   const { addToCart } = useCart();
-  const [menuItems, setMenuItems] = useState([]);
+  const [allMenuItems, setAllMenuItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({
     category: "",
@@ -24,51 +24,58 @@ export default function HomePage() {
     isAvailable: "true",
   });
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
-  const hasLoadedRef = useRef(false);
 
-  const loadData = async ({ silent = false } = {}) => {
-    if (silent) setRefreshing(true);
-    else setLoading(true);
+  const loadData = async () => {
+    setLoading(true);
     setError("");
     try {
-      const params = { ...filters };
-      Object.keys(params).forEach(
-        (key) => params[key] === "" && delete params[key],
-      );
       const [menuResponse, categoryResponse] = await Promise.all([
-        menuApi.getMenu(params),
+        menuApi.getMenu({ limit: 200 }),
         menuApi.getCategories(),
       ]);
-      setMenuItems(menuResponse.data.data);
-      setCategories(categoryResponse.data.data);
+      setAllMenuItems(menuResponse.data.data || []);
+      setCategories(categoryResponse.data.data || []);
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to load menu");
     } finally {
-      if (silent) setRefreshing(false);
-      else setLoading(false);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadData().finally(() => {
-      hasLoadedRef.current = true;
-    });
+    loadData();
   }, []);
 
-  useEffect(() => {
-    if (!hasLoadedRef.current) return undefined;
-    const timeout = setTimeout(() => loadData({ silent: true }), 250);
-    return () => clearTimeout(timeout);
-  }, [
-    filters.category,
-    filters.search,
-    filters.minPrice,
-    filters.maxPrice,
-    filters.isAvailable,
-  ]);
+  const menuItems = useMemo(() => {
+    const normalizedSearch = filters.search.trim().toLowerCase();
+    return allMenuItems.filter((item) => {
+      const matchesCategory =
+        !filters.category ||
+        (item.category?._id || item.category) === filters.category;
+      const matchesMinPrice =
+        !filters.minPrice || Number(item.price) >= Number(filters.minPrice);
+      const matchesMaxPrice =
+        !filters.maxPrice || Number(item.price) <= Number(filters.maxPrice);
+      const matchesAvailability =
+        filters.isAvailable === ""
+          ? true
+          : Boolean(item.isAvailable) === (filters.isAvailable === "true");
+      const matchesSearch =
+        !normalizedSearch ||
+        item.name?.toLowerCase().includes(normalizedSearch) ||
+        item.description?.toLowerCase().includes(normalizedSearch);
+
+      return (
+        matchesCategory &&
+        matchesMinPrice &&
+        matchesMaxPrice &&
+        matchesAvailability &&
+        matchesSearch
+      );
+    });
+  }, [allMenuItems, filters]);
 
   const matchingCount = useMemo(() => menuItems.length, [menuItems]);
   const featuredItems = useMemo(() => {
@@ -265,11 +272,6 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {refreshing ? (
-              <span className="pill bg-white text-slate-500">
-                Refreshing menu...
-              </span>
-            ) : null}
             <div className="pill w-fit bg-brand-50 text-brand-700">
               {matchingCount} item(s) match your filters
             </div>
@@ -368,9 +370,7 @@ export default function HomePage() {
           />
         ) : null}
 
-        <div
-          className={`grid gap-6 transition-opacity duration-200 md:grid-cols-2 xl:grid-cols-3 ${refreshing ? "opacity-70" : "opacity-100"}`}
-        >
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {menuItems.map((item) => (
             <MenuCard key={item._id} item={item} onAdd={handleAdd} />
           ))}

@@ -28,6 +28,7 @@ export default function OrderCard({ order, action }) {
         ))}
       </div>
 
+      {order.deliveryAddress ? <p className="mt-4 text-sm text-slate-600"><span className="font-semibold">Address:</span> {order.deliveryAddress}</p> : null}
       {order.specialInstructions ? <p className="mt-4 text-sm text-slate-600"><span className="font-semibold">Instructions:</span> {order.specialInstructions}</p> : null}
       {action ? <div className="mt-5">{action}</div> : null}
     </div>

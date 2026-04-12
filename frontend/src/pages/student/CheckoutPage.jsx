@@ -8,6 +8,7 @@ import { currency } from '../../lib/utils';
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { cart, refreshCart } = useCart();
+  const [deliveryAddress, setDeliveryAddress] = useState('');
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,10 @@ export default function CheckoutPage() {
     setLoading(true);
     setError('');
     try {
-      const response = await orderApi.place({ specialInstructions });
+      const response = await orderApi.place({
+        deliveryAddress,
+        specialInstructions,
+      });
       await refreshCart();
       navigate(`/orders/${response.data.data._id}`);
     } catch (err) {
@@ -43,6 +47,21 @@ export default function CheckoutPage() {
           <p className="section-kicker">Checkout</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Confirm your pickup order</h1>
           <p className="section-subtitle">Cash on pickup is the active payment method for this release.</p>
+
+          <div className="mt-6 rounded-[24px] bg-slate-50 p-5">
+            <label className="label">Exact address</label>
+            <textarea
+              className="input min-h-[120px]"
+              maxLength="300"
+              placeholder="Enter your hall, building, floor, room, or exact pickup location"
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
+              required
+            />
+            <p className="mt-2 text-xs text-slate-500">
+              {deliveryAddress.length}/300 characters
+            </p>
+          </div>
 
           <div className="mt-6 rounded-[24px] bg-slate-50 p-5">
             <label className="label">Special instructions</label>
@@ -65,6 +84,12 @@ export default function CheckoutPage() {
             ))}
           </div>
           <div className="mt-5 space-y-3 border-t border-slate-200 pt-4 text-sm">
+            <div className="space-y-1">
+              <span className="text-slate-500">Address</span>
+              <p className="font-medium text-slate-900">
+                {deliveryAddress.trim() || 'Add your exact address before placing the order.'}
+              </p>
+            </div>
             <div className="flex items-center justify-between"><span className="text-slate-500">Estimated preparation</span><span className="font-medium text-slate-900">{estimatedReadyMinutes} min</span></div>
             <div className="flex items-center justify-between"><span className="text-slate-500">Payment</span><span className="font-medium text-slate-900">Cash on pickup</span></div>
             <div className="flex items-center justify-between text-base font-semibold"><span>Total</span><span>{currency(cart.totalAmount)}</span></div>

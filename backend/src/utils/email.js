@@ -99,6 +99,7 @@ export const sendOrderConfirmationEmail = async (
 
     Order ID: ${orderId}
     Total Amount: BDT ${orderDetails.totalAmount}
+    Address: ${orderDetails.deliveryAddress}
     Estimated Ready Time: ${orderDetails.estimatedReadyTime}
 
     Thank you for your order!

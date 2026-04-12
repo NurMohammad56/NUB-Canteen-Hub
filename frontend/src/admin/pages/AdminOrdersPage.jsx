@@ -50,6 +50,13 @@ export default function AdminOrdersPage() {
     loadOrders({ silent: true, page: meta.page });
   };
 
+  const removeOrder = async (id) => {
+    if (!window.confirm('Delete this order history? This cannot be undone.')) return;
+    await orderApi.remove(id);
+    const nextPage = meta.page > 1 && orders.length === 1 ? meta.page - 1 : meta.page;
+    loadOrders({ silent: true, page: nextPage });
+  };
+
   const totals = useMemo(() => ({
     orders: meta.total,
     visible: orders.length,
@@ -108,10 +115,16 @@ export default function AdminOrdersPage() {
                 </div>
                 <p className="mt-1 text-sm text-slate-500">{order.user?.name} / {order.user?.studentId} / {formatDateTime(order.orderDate)}</p>
                 <p className="mt-1 text-sm text-slate-500">Total: {currency(order.totalAmount)}</p>
+                <p className="mt-1 text-sm text-slate-500">Address: {order.deliveryAddress || 'Not provided'}</p>
               </div>
-              <select className="input max-w-[220px]" value={order.status} onChange={(e) => updateStatus(order._id, e.target.value)}>
-                {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
-              </select>
+              <div className="flex flex-wrap gap-3">
+                <select className="input max-w-[220px]" value={order.status} onChange={(e) => updateStatus(order._id, e.target.value)}>
+                  {statuses.map((status) => <option key={status} value={status}>{status}</option>)}
+                </select>
+                <button type="button" onClick={() => removeOrder(order._id)} className="btn-danger">
+                  Delete history
+                </button>
+              </div>
             </div>
 
             <div className="mt-4 grid gap-3">

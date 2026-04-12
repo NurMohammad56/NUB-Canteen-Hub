@@ -39,6 +39,7 @@ export const orderApi = {
   cancel: (id) => client.put(`/orders/${id}/cancel`),
   getAll: (params) => client.get('/orders/admin/all', { params }),
   updateStatus: (id, payload) => client.put(`/orders/${id}/status`, payload),
+  remove: (id) => client.delete(`/orders/admin/${id}`),
   stats: (params) => client.get('/orders/admin/stats', { params }),
 };
 

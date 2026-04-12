@@ -8,7 +8,14 @@ import {
 
 export const placeOrder = async (req, res) => {
   try {
-    const { specialInstructions } = req.body;
+    const { specialInstructions, deliveryAddress } = req.body;
+
+    if (!deliveryAddress || !deliveryAddress.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide the exact address",
+      });
+    }
 
     // Get user's cart
     const cart = await Cart.findOne({ user: req.userId }).populate(
@@ -54,6 +61,7 @@ export const placeOrder = async (req, res) => {
         subtotal: item.subtotal,
       })),
       totalAmount: cart.totalAmount,
+      deliveryAddress: deliveryAddress.trim(),
       status: "Pending",
       specialInstructions: specialInstructions || "",
       orderDate: new Date(),
@@ -76,6 +84,7 @@ export const placeOrder = async (req, res) => {
       {
         items: order.items,
         totalAmount: order.totalAmount,
+        deliveryAddress: order.deliveryAddress,
         estimatedReadyTime: order.estimatedReadyTime,
       },
     ).catch((err) => console.error("Email error:", err));
@@ -320,6 +329,31 @@ export const updateOrderStatus = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to update order status",
+      error: error.message,
+    });
+  }
+};
+
+export const deleteOrderHistory = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order history deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete order history error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete order history",
       error: error.message,
     });
   }

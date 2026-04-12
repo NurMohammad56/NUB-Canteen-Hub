@@ -3,7 +3,7 @@ import { currency } from '../../lib/utils';
 
 export default function MenuCard({ item, onAdd, disabled }) {
   return (
-    <div className="card group overflow-hidden">
+    <div className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-soft">
       <div className="relative aspect-[4/3] bg-slate-100">
         {item.imageUrl ? (
           <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
